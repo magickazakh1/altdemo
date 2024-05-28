@@ -1,0 +1,13 @@
+apt-get install firewalld
+systemctl enable --now firewalld
+ISP HQ-R BR-R (enp0 raznoe)
+firewall-cmd --permanent --zone=public --add-interface=enp0s8
+firewall-cmd --permanent --zone=public --add-interface=enp0s9
+firewall-cmd --permanent --zone=public --add-interface=enp0s10
+firewall-cmd --permanent --zone=public --add-masquerade
+firewall-cmd --permanent --add-port=89/tcp 89/udp 123/tcp 123/udp 5201/tcp 5201/udp
+firewall-cmd --permanent --add-protocol=eigrp ipv6 ipv6-auth ipv6-crypt ipv6-frag 
+ipv6-icmp ipv6-nonxt ipv6-opts ipv6-route ospf
+firewall-cmd --permanent --add-service=ntp
+firewall-cmd --reload
+
