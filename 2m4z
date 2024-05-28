@@ -1,0 +1,9 @@
+mkdir /opt/{branch,network,admin}
+chmod 777 /opt/{branch,network,admin}
+/etc/samba/smb.conf
+[Network]
+TAB path = /opt/network,branch,admin
+TAB writable = yes
+TAB read only = no
+TAB valid users = @"HQ\Network admins"
+systemctl restart samba
