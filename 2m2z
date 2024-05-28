@@ -1,0 +1,13 @@
+timedatectl set-timezone Asia/Krasnoyarsk na vsex
+install chrony
+/etc/chrony.conf
+server 127.0.0.1 iburst prefer
+local stratum 5
+allow 0/0
+allow ::/0
+systemctl enable --now chronyd
+
+/etc/chrony.conf
+server IP-podseti iburst prefer
+systemctl enable --now chronyd
+systemctl restart chronyd
