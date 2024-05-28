@@ -1,3 +1,10 @@
-apt-get update && apt-get install -y apache2 docker-engine docker-compose
+apt-get update && apt-get install -y apache2 mariadb docker-engine docker-compose
 systemctl enable --now docker
 usermod admin -aG docker
+cd /home/admin
+cp wiki.yml
+docker-compose -f wiki.yml up -d
+docker exec -it mariadb bash
+hostname -i
+cp /docker/blabla/LocalSettings.php /home/admin/
+docker-compose -f wiki.yml up -d
