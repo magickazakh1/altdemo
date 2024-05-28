@@ -7,3 +7,34 @@ TAB writable = yes
 TAB read only = no
 TAB valid users = @"HQ\Network admins"
 systemctl restart samba
+
+BR-SRV
+apt-get install -y pam_mount
+apt-get install -y cifs-utils
+apt-get install -y systemd-settings-enable-kill-user-processes
+reboot
+/etc/pam.d/system-auth
+session TAB [success=1 default=ignore] TAB pam_succeed_if.so service = systemd-user quiet
+session TAB optional TAB pam_mount.so disable_interactive
+/etc/security/pam_mount.conf.xml
+<volume uid="Admin"
+TAB TAB fstype="cifs"
+TAB TAB server="hq-srv.hq.work"
+TAB TAB path="Admin_Files"
+TAB TAB mountpoint="/mnt/All_Files"
+TAB TAB options="sec=krb5i,cruid=%(USERUID),nounix,uid=%(USERUID),gid=%(USERGID),file_mode=0644,dir_mode=0775"/>
+<volume uid="Network admin"
+TAB TAB fstype="cifs"
+TAB TAB server="hq-srv.hq.work"
+TAB TAB path="Network"
+TAB TAB mountpoint="/mnt/All_Files"
+TAB TAB options="sec=krb5i,cruid=%(USERUID),nounix,uid=%(USERUID),gid=%(USERGID),file_mode=0644,dir_mode=0775"/>
+<volume uid="Branch admin"
+TAB TAB fstype="cifs"
+TAB TAB server="hq-srv.hq.work"
+TAB TAB path="Branch_Files"
+TAB TAB mountpoint="/mnt/All_Files"
+TAB TAB options="sec=krb5i,cruid=%(USERUID),nounix,uid=%(USERUID),gid=%(USERGID),file_mode=0644,dir_mode=0775"/>
+
+login pod domen user
+df
