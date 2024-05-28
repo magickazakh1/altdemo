@@ -1,0 +1,25 @@
+apt-get update && apt-get install -y moodle
+apt-get install -y moodle-apache2
+apt-get install -y moodle-local-mysql
+systemctl enable --now mariadb
+systemctl enable --now httpd2
+mysql -u root
+CREATE DATABASE moodle DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+GRANT ALL ON moodle.* TO moodleuser@localhost IDENTIFIED BY 'moodlepasswd';
+FLUSH PRIVILEGES;
+EXIT
+systemctl restart httpd2
+systemctl restart mariadb
+http://192.168.100.2/moodle
+/var/www/webapps/moodle
+/var/lib/moodle/default
+Сервер баз данных localhost
+Название БД moodle
+Пользователь БД moodleuser
+Пароль moodlepasswd
+Префикс имен таблиц mdl_
+Порт БД 3106
+nano /etc/php/x/apache2-mod_php/php.ini
+max_input_vars = 6000
+/etc/php-fpm/*.conf.
+systemctl restart php-fpm httpd
