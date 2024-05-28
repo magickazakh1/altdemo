@@ -1,3 +1,6 @@
+ipv4address ipv4route ipv6address ipv6route
+CONFIG_IPV4=yes
+CONFIG_IPV6=yes
 ISP
 1.1.1.1/30 2.2.2.1/30 3.3.3.1/30
 2024:1::1/64 2024:2::1/64 2024:3::1/64
