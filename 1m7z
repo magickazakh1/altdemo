@@ -1,0 +1,4 @@
+nano /etc/ssh/sshd_config
+Port 2222
+systemctl restart sshd
+ss -tlpn | grep ssh
