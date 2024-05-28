@@ -22,6 +22,13 @@ systemctl enable --now bind
 cp /var/lib/samba/private/krb5.conf /etc/krb5.conf
 samba-tool domain info 127.0.0.1
 
+BR-SRV!!!
+apt-get install -y task-auth-ad-sssd
+echo search hq.work > /etc/net/ifaces/ens18/resolv.conf
+echo nameserver 172.16.100.2 >> /etc/net/ifaces/ens18/resolv.conf
+systemctl restart network
+system-auth write ad demo.first br-srv demo 'administrator' 'P@ssw0rd'
+reboot
 CLI!!!
 apt-get update && apt-get install -y task-auth-ad-sssd
 apt-get install -y admc
