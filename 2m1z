@@ -1,0 +1,35 @@
+apt-get install -y bind bind-utils
+nano /etc/bind/options.conf
+listen-on {any}
+listen-on-v6 {any}
+forward first;
+forwarders 8.8.8.8
+allow-query { any }
+systemctl enable --now bind
+echo name_servers=127.0.0.1 >> /etc/resolvconf.conf
+resolvconf -u
+cp local.conf
+cp /etc/bind/zone/{localdomain,hq.db}
+cp /etc/bind/zone/{localdomain,branch.db}
+cp /etc/bind/zone/{127.in-addr.arpa,172.db}
+cp /etc/bind/zone/{127.in-addr.arpa,192.db}
+chown root:named /etc/bind/zone/{hq,branch,172,192}.db
+nano /etc/bind/zone/hq.db
+hq.work. root.hq.work.
+hq-r IN A 172.16.100.1
+hq-srv IN A 172.16.100.2
+nano /etc/bind/zone/branch.db
+branch.work. root.branch.work.
+br-r IN A 192.168.100.1
+br-srv IN A 192.168.100.2
+nano /etc/bind/zone/172.db
+hq.work. root.hq.work.
+NS hq.work.
+1 IN PTR hq-r.hq.work
+2 hq-srv
+nano /etc/bind/zone/192.db
+branch.work. root.branch.work.
+NS brancg.work.
+1 IN PTR br-r.branch.work
+named-checkconf -z
+systemctl restart bind
