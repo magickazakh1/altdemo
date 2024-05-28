@@ -1,0 +1,28 @@
+apt-get install frr
+/etc/frr/daemons eigrpd ospf6d
+systemctl enable --now frr
+vtysh
+ISP
+router eigrp 1
+net 1.1.1.0/30 2.2.2.0/30 3.3.3.0/30
+router ospf6
+ospf6 router-id 2.2.2.2
+int enp
+ipv6 ospf6 area 0
+do wr
+HQ-R
+router eigrp 1
+net 1.1.1.0/30 172.16.100.0/26
+router ospf6
+ospf6 router-id 1.1.1.1
+int enp
+ipv6 ospf6 area 0
+do wr
+BR-R
+router eigrp 1
+net 2.2.2.0/30 192.168.100.0/28
+router ospf6
+ospf6 router-id 3.3.3.3
+int enp
+ipv6 ospf6 area 0
+do wr
