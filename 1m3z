@@ -1,0 +1,43 @@
+hq-srv
+install NetworkManager-tui
+NM_CONTROLLED=yes
+nmtui
+
+hq-r
+apt-get install dhcp-server
+cp /etc/dhcp/dhcpd.conf.sample /etc/dhcp/dhcpd.conf
+subnet 172.16.100.0 netmask 255.255.255.192 {
+range 172.16.100.2 172.16.100.12;
+option routers 172.16.100.1;
+option subnet-mask 255.255.255.192;
+option domain-name "hq.work";
+option domain-name-servers 8.8.8.8;
+default-lease-time 600;
+max-lease-time 7200;
+}
+host HQ-SRV {
+        hardware ethernet MAC;
+        fixed-address 172.16.100.2;
+}
+
+/etc/sysconfig/dhcpd
+DHCPDARGS=enp0s8
+systemctl enable --now dhcpd
+cp /usr/share/doc/dhcp-server/dhcpd6.conf.example /etc/dhcp/dhcpd6.conf
+journalctl -f -u dhcpd6.service
+option 3600
+option 7200
+allow leasequery;
+option prefer 255;
+option refresh time 21600;
+subnet 6 FD24:172::/122 {
+         range6 FD24:172::2 FD24:172::12;
+}
+host HQ-SRV {
+  host-identifier option
+          dhcp6.client-id DUID;
+  fixed-address6 FD24:172::2;
+  fixed-prefix6 FD24:172::/122;
+  option dhcp6.name-servers FD24:172::2;
+}
+
